@@ -1,0 +1,18 @@
+name: 'Vault GCloud Action'
+description: 'Gets roleset from Vault and executes GCloud command'
+inputs:
+    vaultUrl:
+        description: 'Vault URL'
+        required: true
+    roleId:
+        description: 'Role to authenticate to vault with'
+        required: true
+    secretId:
+        description: 'Secret associated with role provide'
+        required: true
+    rolesetPath:
+        description: 'Path to the GCP roleset in Vault'
+        required: true
+runs:
+    using: 'node12'
+    main: 'dist/index.js'
