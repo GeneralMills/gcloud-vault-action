@@ -1,5 +1,5 @@
 const core = require("@actions/core");
-const { request } = require('./httpClient');
+const request  = require('./httpClient');
 
 async function main() {
   try {
