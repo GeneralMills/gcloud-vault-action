@@ -3002,14 +3002,11 @@ module.exports.wrap = wrap;
 
 const axios = __nccwpck_require__(926);
 
-async function request(url, method, payload, headers, username, password) {
-  const auth = username && password ? { username, password } : null;
+async function request(url, method, payload) {
   const config = {
     url,
     method,
-    auth,
-    data: payload,
-    headers
+    data: payload
   };
   try {
     const response = await axios(config);
@@ -3027,7 +3024,7 @@ module.exports = request;
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const core = __nccwpck_require__(934);
-const { request } = __nccwpck_require__(574);
+const request  = __nccwpck_require__(574);
 
 async function main() {
   try {
@@ -3049,6 +3046,9 @@ async function main() {
       `${vaultUrl}/v1/auth/approle/login`,
       "POST",
       vaultAuthPayload,
+      null,
+      null,
+      null
     );
 
     const statusCode = response.status;

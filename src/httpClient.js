@@ -1,13 +1,10 @@
 const axios = require('axios');
 
-async function request(url, method, payload, headers, username, password) {
-  const auth = username && password ? { username, password } : null;
+async function request(url, method, payload) {
   const config = {
     url,
     method,
-    auth,
-    data: payload,
-    headers
+    data: payload
   };
   try {
     const response = await axios(config);
