@@ -21,6 +21,9 @@ async function main() {
       `${vaultUrl}/v1/auth/approle/login`,
       "POST",
       vaultAuthPayload,
+      null,
+      null,
+      null
     );
 
     const statusCode = response.status;
