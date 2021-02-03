@@ -13,7 +13,7 @@ async function main() {
       "role_id": "${roleId}",
       "secret_id": "${secretId}"
     }`;
-    
+    console.log("test message");
     // current time
     const time = new Date().toTimeString();
 
