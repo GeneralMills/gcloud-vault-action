@@ -1,6 +1,5 @@
 const core = require("@actions/core");
 const { request } = require('./httpClient');
-const { GithubActions } = require('./githubActions');
 
 async function main() {
   try {

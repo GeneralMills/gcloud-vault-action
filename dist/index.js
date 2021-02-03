@@ -3028,7 +3028,6 @@ module.exports = request;
 
 const core = __nccwpck_require__(934);
 const { request } = __nccwpck_require__(574);
-const { GithubActions } = __nccwpck_require__(9149);
 
 async function main() {
   try {
@@ -4226,14 +4225,6 @@ module.exports = {
 	stdout: getSupportLevel(process.stdout),
 	stderr: getSupportLevel(process.stderr)
 };
-
-
-/***/ }),
-
-/***/ 9149:
-/***/ ((module) => {
-
-module.exports = eval("require")("./githubActions");
 
 
 /***/ }),
