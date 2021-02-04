@@ -3033,10 +3033,7 @@ async function main() {
     const roleId = core.getInput('roleId', { required: true });
     const secretId = core.getInput('secretId', { required: true });
     const rolesetPath = core.getInput('rolesetPath', { required: true });
-    const vaultAuthPayload = `{
-      "role_id": "${roleId}",
-      "secret_id": "${secretId}"
-    }`;
+    const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
     console.log("test message");
     // current time
     const time = new Date().toTimeString();
