@@ -3001,6 +3001,7 @@ module.exports.wrap = wrap;
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 const axios = __nccwpck_require__(926);
+const https = __nccwpck_require__(7211);
 
 async function request(url, method, payload, vaultCert) {
   const config = {

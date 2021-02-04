@@ -1,4 +1,5 @@
 const axios = require('axios');
+const https = require('https');
 
 async function request(url, method, payload, vaultCert) {
   const config = {
