@@ -3002,11 +3002,12 @@ module.exports.wrap = wrap;
 
 const axios = __nccwpck_require__(926);
 
-async function request(url, method, payload) {
+async function request(url, method, payload, vaultCert) {
   const config = {
     url,
     method,
-    data: payload
+    data: payload,
+    httpClient: new https.Agent({ ca: vaultCert })
   };
   try {
     const response = await axios(config);
@@ -3034,22 +3035,22 @@ async function main() {
     const secretId = core.getInput('secretId', { required: true });
     const rolesetPath = core.getInput('rolesetPath', { required: true });
     const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+    const vaultCert = core.getInput('vaultCert', { required: true });
+
     console.log("test message");
     // current time
     const time = new Date().toTimeString();
 
     // authenticate to vault
-    const response = await request(
+    const authResponse = await request(
       `${vaultUrl}/v1/auth/approle/login`,
       "POST",
       vaultAuthPayload,
-      null,
-      null,
-      null
+      vaultCert
     );
 
-    const statusCode = response.status;
-    const data = response.data;
+    const statusCode = authResponse.status;
+    const data = authResponse.data;
     const outputObject = {
       url,
       method,
@@ -3058,6 +3059,25 @@ async function main() {
       statusCode,
       data
     };
+
+    // def tokenJSON = readJSON text: result.content
+    // // vault token used for future vault calls
+    // env.VAULT_TOKEN = tokenJSON.auth.client_token
+
+    //     // get GCP Service Account private key from Vault
+    // def tokenResult = httpRequest acceptType: 'APPLICATION_JSON',
+    //                         responseHandle: 'STRING',
+    //                         customHeaders: [[maskValue: true, name: 'X-Vault-Token', value: env.VAULT_TOKEN]],
+    //                         httpMode: 'GET',
+    //                         url: "$VAULT_URL/v1/$DEV_ROLESET_PATH",
+    //                         consoleLogResponseBody: false
+    // def tokenJson = readJSON text: tokenResult.content
+
+    //const serviceAccountResponse = await request(
+    // `${vaultUrl}/v1/${rolesetPath}`,
+    // "GET",
+    // `{maskValue: true, name: 'X-Vault-Token', value: VAULT_TOKEN}
+    // );
 
     const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
     console.log(consoleOutputJSON);
