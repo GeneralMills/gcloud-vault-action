@@ -13,6 +13,9 @@ inputs:
     rolesetPath:
         description: 'Path to the GCP roleset in Vault'
         required: true
+    vaultCert:
+        description: 'Vault cert to authenticate with to make http calls'
+        required: true
 runs:
     using: 'node12'
     main: 'dist/index.js'
