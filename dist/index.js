@@ -3032,16 +3032,16 @@ const fs = __nccwpck_require__(5747);
 async function main() {
   try {
     // inputs from action
-    // const vaultUrl = core.getInput('vaultUrl', { required: true });
-    // const roleId = core.getInput('roleId', { required: true });
-    // const secretId = core.getInput('secretId', { required: true });
-    // const rolesetPath = core.getInput('rolesetPath', { required: true });
-    // const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
-
-    const vaultUrl = "https://vault.genmills.com:8200";
-    const roleId = "";
-    const secretId = "";
+    const vaultUrl = core.getInput('vaultUrl', { required: true });
+    const roleId = core.getInput('roleId', { required: true });
+    const secretId = core.getInput('secretId', { required: true });
+    const rolesetPath = core.getInput('rolesetPath', { required: true });
     const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+
+    // const vaultUrl = "https://vault.genmills.com:8200";
+    // const roleId = "";
+    // const secretId = "";
+    // const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
 
 
     console.log("test message");
