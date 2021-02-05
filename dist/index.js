@@ -3003,12 +3003,12 @@ module.exports.wrap = wrap;
 const axios = __nccwpck_require__(926);
 const https = __nccwpck_require__(7211);
 
-async function request(url, method, payload, vaultCert) {
+async function request(url, method, payload) {
   const config = {
     url,
     method,
     data: payload,
-    httpClient: new https.Agent({ rejectUnauthorized: false  })
+    httpsAgent: new https.Agent({ rejectUnauthorized: false })
   };
   try {
     const response = await axios(config);
@@ -3032,18 +3032,16 @@ const fs = __nccwpck_require__(5747);
 async function main() {
   try {
     // inputs from action
-    const vaultUrl = core.getInput('vaultUrl', { required: true });
-    const roleId = core.getInput('roleId', { required: true });
-    const secretId = core.getInput('secretId', { required: true });
-    const rolesetPath = core.getInput('rolesetPath', { required: true });
-    const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
-    const vaultCert = core.getInput('vaultCert', { required: true });
-
-    // const vaultUrl = "https://vault.genmills.com:8000";
-    // const roleId = "";
-    // const secretId = "";
+    // const vaultUrl = core.getInput('vaultUrl', { required: true });
+    // const roleId = core.getInput('roleId', { required: true });
+    // const secretId = core.getInput('secretId', { required: true });
+    // const rolesetPath = core.getInput('rolesetPath', { required: true });
     // const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
-    // const vaultCert = fs.readFileSync('cert.pem', 'utf8');
+
+    const vaultUrl = "https://vault.genmills.com:8200";
+    const roleId = "";
+    const secretId = "";
+    const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
 
 
     console.log("test message");
@@ -3055,7 +3053,6 @@ async function main() {
       `${vaultUrl}/v1/auth/approle/login`,
       "POST",
       vaultAuthPayload,
-      vaultCert
     );
 
     const statusCode = authResponse.status;

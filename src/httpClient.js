@@ -1,12 +1,12 @@
 const axios = require('axios');
 const https = require('https');
 
-async function request(url, method, payload, vaultCert) {
+async function request(url, method, payload) {
   const config = {
     url,
     method,
     data: payload,
-    httpClient: new https.Agent({ rejectUnauthorized: false  })
+    httpsAgent: new https.Agent({ rejectUnauthorized: false })
   };
   try {
     const response = await axios(config);
