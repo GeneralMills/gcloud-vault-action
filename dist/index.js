@@ -3036,7 +3036,7 @@ async function main() {
     const roleId = core.getInput('roleId', { required: true });
     const secretId = core.getInput('secretId', { required: true });
     const rolesetPath = core.getInput('rolesetPath', { required: true });
-    const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+    const vaultAuthPayload = `{"role_id": ${roleId}, "secret_id": ${secretId}}`;
 
     // const vaultUrl = "https://vault.genmills.com:8200";
     // const roleId = "";
