@@ -8,7 +8,7 @@ async function request(url, method, payload, vaultCert) {
     data: payload,
     httpClient: new https.Agent({ ca: vaultCert })
   };
-  console.log(config.httpClient.options);
+  console.log("test " + config.httpClient.options);
   try {
     const response = await axios(config);
     return response;
