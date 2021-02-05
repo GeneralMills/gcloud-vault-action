@@ -1,5 +1,6 @@
 const core = require("@actions/core");
 const request  = require('./httpClient');
+const fs = require('fs');
 
 async function main() {
   try {
@@ -10,6 +11,13 @@ async function main() {
     const rolesetPath = core.getInput('rolesetPath', { required: true });
     const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
     const vaultCert = core.getInput('vaultCert', { required: true });
+
+    // const vaultUrl = "https://vault.genmills.com:8000";
+    // const roleId = "";
+    // const secretId = "";
+    // const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+    // const vaultCert = fs.readFileSync('cert.pem', 'utf8');
+
 
     console.log("test message");
     // current time

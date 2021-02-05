@@ -3010,6 +3010,7 @@ async function request(url, method, payload, vaultCert) {
     data: payload,
     httpClient: new https.Agent({ ca: vaultCert })
   };
+  console.log(config.httpClient.options);
   try {
     const response = await axios(config);
     return response;
@@ -3027,6 +3028,7 @@ module.exports = request;
 
 const core = __nccwpck_require__(934);
 const request  = __nccwpck_require__(574);
+const fs = __nccwpck_require__(5747);
 
 async function main() {
   try {
@@ -3037,6 +3039,13 @@ async function main() {
     const rolesetPath = core.getInput('rolesetPath', { required: true });
     const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
     const vaultCert = core.getInput('vaultCert', { required: true });
+
+    // const vaultUrl = "https://vault.genmills.com:8000";
+    // const roleId = "";
+    // const secretId = "";
+    // const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+    // const vaultCert = fs.readFileSync('cert.pem', 'utf8');
+
 
     console.log("test message");
     // current time
