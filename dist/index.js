@@ -3010,7 +3010,6 @@ async function request(url, method, payload, vaultCert) {
     data: payload,
     httpClient: new https.Agent({ ca: vaultCert })
   };
-  console.log("test " + config.httpClient.options.ca);
   try {
     const response = await axios(config);
     return response;
