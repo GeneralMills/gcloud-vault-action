@@ -3076,7 +3076,6 @@ async function main() {
     );
     statusCode = serviceAccountResponse.status;
     data = serviceAccountResponse.data;
-    console.log(data);
 
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
     // console.log(consoleOutputJSON);
