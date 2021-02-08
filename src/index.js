@@ -37,7 +37,7 @@ async function main() {
     var privateKey = data.data.private_key_data;
     var keyValueDecoded = Buffer.from(privateKey, 'base64');
     // var clientEmail = JSON.parse(keyValueDecoded.toString()).client_email;
-    const leaseId = data.leaseId;
+    const leaseId = data.lease_id;
 
     // add service account private key json file to container 
     fs.writeFile('./sa-key.json', keyValueDecoded, (err) => {
