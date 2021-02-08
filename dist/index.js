@@ -3059,15 +3059,6 @@ async function main() {
     var data = authResponse.data;
     const vaultToken = data.auth.client_token;
 
-    //     // get GCP Service Account private key from Vault
-    // def tokenResult = httpRequest acceptType: 'APPLICATION_JSON',
-    //                         responseHandle: 'STRING',
-    //                         customHeaders: [[maskValue: true, name: 'X-Vault-Token', value: env.VAULT_TOKEN]],
-    //                         httpMode: 'GET',
-    //                         url: "$VAULT_URL/v1/$DEV_ROLESET_PATH",
-    //                         consoleLogResponseBody: false
-    // def tokenJson = readJSON text: tokenResult.content
-
     const serviceAccountResponse = await request(
     `${vaultUrl}/v1/${rolesetPath}`,
     "GET",
@@ -3076,6 +3067,16 @@ async function main() {
     );
     statusCode = serviceAccountResponse.status;
     data = serviceAccountResponse.data;
+
+    // get private key from Vault response json body and decode base64 private key value
+    // def keyValue = tokenJson.data.private_key_data
+    // def keyValueDecoded = new String(keyValue.decodeBase64())
+    // def slurper = new JsonSlurper()
+    // def keyValueObject = slurper.parseText(keyValueDecoded)
+
+    var privateKey = data.data.private_key_data;
+    var keyValueDecoded = Buffer.from(privateKey, 'base64');
+    console.log(keyValueDecoded.client_email);
 
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
     // console.log(consoleOutputJSON);
