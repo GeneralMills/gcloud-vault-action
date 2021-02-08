@@ -3073,8 +3073,23 @@ async function main() {
     });
 
     // auth to GCP with service account
-    exec('gcloud auth activate-service-account --key-file ./sa-key.json');
-    exec(gcloudCommand);
+    exec('gcloud auth activate-service-account --key-file ./sa-key.json', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.error(`stderr: ${stderr}`);
+    });
+
+    exec(gcloudCommand, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.error(`stderr: ${stderr}`);
+    });
 
     const revokeResponse = await request(
       `${vaultUrl}/v1/sys/leases/revoke`,
