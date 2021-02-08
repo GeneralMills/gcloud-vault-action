@@ -13,6 +13,9 @@ inputs:
     rolesetPath:
         description: 'Path to the GCP roleset in Vault'
         required: true
+    gcloudCommand:
+        description: 'gcloud command to run, must include gcloud in the command'
+        required: true
 runs:
     using: 'node12'
     main: 'dist/index.js'
