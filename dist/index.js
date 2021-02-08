@@ -3056,10 +3056,9 @@ async function main() {
     );
 
     var statusCode = authResponse.status;
-    console.log(authResponse.data);
-    var vaultToken = authResponse.data.auth.client_token;
-    // var jsonData = JSON.parse(authData);
-    // const vaultToken = jsonData.client_token;
+    var data = authResponse.data;
+    console.log(data);
+    const vaultToken = data.client_token;
 
     //     // get GCP Service Account private key from Vault
     // def tokenResult = httpRequest acceptType: 'APPLICATION_JSON',
@@ -3075,8 +3074,8 @@ async function main() {
     "GET",
     `{maskValue: true, name: 'X-Vault-Token', value: ${vaultToken}}`
     );
-    statusCode = serviceAccountResponse.status;
-    data = serviceAccountResponse.data;
+    statusCode = authResponse.status;
+    data = authResponse.data;
     console.log(data);
 
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
