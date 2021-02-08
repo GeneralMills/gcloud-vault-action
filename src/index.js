@@ -48,7 +48,7 @@ async function main() {
 
     var privateKey = data.data.private_key_data;
     var keyValueDecoded = Buffer.from(privateKey, 'base64');
-    console.log(keyValueDecoded.client_email);
+    console.log(keyValueDecoded);
 
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
     // console.log(consoleOutputJSON);
