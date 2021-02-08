@@ -48,22 +48,15 @@ async function main() {
     exec('gcloud auth activate-service-account --key-file ./sa-key.json');
     exec(gcloudCommand);
 
-    // if (statusCode >= 400) {
-    //   core.setFailed(`HTTP request failed with status code: ${statusCode}`);
-    // } else {
-    //   const outputJSON = JSON.stringify(outputObject);
-    //   core.setOutput('output', outputJSON);
-    // }
-  } catch (error) {
-    core.setFailed(error.message);
-  }
-  finally {
     const revokeResponse = await request(
       `${vaultUrl}/v1/sys/leases/revoke`,
       "PUT",
       `{"lease_id": ${leaseId}}`,
       {'X-Vault-Token': vaultToken}
     );
+
+  } catch (error) {
+    core.setFailed(error.message);
   }
 }
 
