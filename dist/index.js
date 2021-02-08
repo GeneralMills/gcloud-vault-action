@@ -3069,14 +3069,14 @@ async function main() {
     //                         consoleLogResponseBody: false
     // def tokenJson = readJSON text: tokenResult.content
 
-    const serviceAccountResponse = await request(
-    `${vaultUrl}/v1/${rolesetPath}`,
-    "GET",
-    `{maskValue: true, name: 'X-Vault-Token', value: ${vaultToken}}`
-    );
-    statusCode = authResponse.status;
-    data = authResponse.data;
-    console.log(data);
+    // const serviceAccountResponse = await request(
+    // `${vaultUrl}/v1/${rolesetPath}`,
+    // "GET",
+    // `{maskValue: true, name: 'X-Vault-Token', value: ${vaultToken}}`
+    // );
+    // statusCode = authResponse.status;
+    // data = authResponse.data;
+    // console.log(data);
 
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
     // console.log(consoleOutputJSON);
