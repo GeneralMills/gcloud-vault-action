@@ -53,12 +53,12 @@ async function main() {
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
     // console.log(consoleOutputJSON);
 
-    if (statusCode >= 400) {
-      core.setFailed(`HTTP request failed with status code: ${statusCode}`);
-    } else {
-      const outputJSON = JSON.stringify(outputObject);
-      core.setOutput('output', outputJSON);
-    }
+    // if (statusCode >= 400) {
+    //   core.setFailed(`HTTP request failed with status code: ${statusCode}`);
+    // } else {
+    //   const outputJSON = JSON.stringify(outputObject);
+    //   core.setOutput('output', outputJSON);
+    // }
   } catch (error) {
     core.setFailed(error.message);
   }
