@@ -31,7 +31,7 @@ async function main() {
     const statusCode = authResponse.status;
     const data = authResponse.data;
     const outputObject = {
-      url,
+      vaultUrl,
       method,
       payload,
       time,
