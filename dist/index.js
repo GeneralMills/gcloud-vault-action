@@ -3032,18 +3032,15 @@ const fs = __nccwpck_require__(5747);
 const { exec } = __nccwpck_require__(3129);
 
 async function main() {
+  // inputs from action
+  const vaultUrl = core.getInput('vaultUrl', { required: true });
+  const roleId = core.getInput('roleId', { required: true });
+  const secretId = core.getInput('secretId', { required: true });
+  const rolesetPath = core.getInput('rolesetPath', { required: true });
+  const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+  const gcloudCommand = core.getInput('gcloudCommand', { required: true });
+
   try {
-    // inputs from action
-    const vaultUrl = core.getInput('vaultUrl', { required: true });
-    const roleId = core.getInput('roleId', { required: true });
-    const secretId = core.getInput('secretId', { required: true });
-    const rolesetPath = core.getInput('rolesetPath', { required: true });
-    const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
-    const gcloudCommand = core.getInput('gcloudCommand', { required: true });
-
-    // current time
-    const time = new Date().toTimeString();
-
     // authenticate to vault
     const authResponse = await request(
       `${vaultUrl}/v1/auth/approle/login`,
