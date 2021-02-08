@@ -46,7 +46,7 @@ async function main() {
     `${vaultUrl}/v1/${rolesetPath}`,
     "GET",
     "",
-    { name: 'X-Vault-Token', value: vaultToken }
+    { Name: 'X-Vault-Token', Value: vaultToken }
     );
     statusCode = authResponse.status;
     data = authResponse.data;
