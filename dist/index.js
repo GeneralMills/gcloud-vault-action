@@ -3057,7 +3057,8 @@ async function main() {
 
     var statusCode = authResponse.status;
     var data = authResponse.data;
-    const vaultToken = data.client_token;
+    var jsonData = JSON.parse(data);
+    const vaultToken = jsonData.client_token;
 
     //     // get GCP Service Account private key from Vault
     // def tokenResult = httpRequest acceptType: 'APPLICATION_JSON',
