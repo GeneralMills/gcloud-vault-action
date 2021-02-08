@@ -30,8 +30,7 @@ async function main() {
 
     var statusCode = authResponse.status;
     var data = authResponse.data;
-    var jsonData = JSON.parse(data);
-    console.log(jsonData);
+    console.log(data.auth);
     const vaultToken = data.client_token;
 
     //     // get GCP Service Account private key from Vault
