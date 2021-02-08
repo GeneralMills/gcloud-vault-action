@@ -3074,7 +3074,7 @@ async function main() {
     `${vaultUrl}/v1/${rolesetPath}`,
     "GET",
     "",
-    { maskValue: true, name: 'X-Vault-Token', value: vaultToken }
+    { name: 'X-Vault-Token', value: vaultToken }
     );
     statusCode = authResponse.status;
     data = authResponse.data;
