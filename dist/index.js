@@ -3056,7 +3056,7 @@ async function main() {
     );
 
     var statusCode = authResponse.status;
-    var vaultToken = authResponse.auth.client_token;
+    var vaultToken = authResponse.data.auth.client_token;
     // var jsonData = JSON.parse(authData);
     // const vaultToken = jsonData.client_token;
 
