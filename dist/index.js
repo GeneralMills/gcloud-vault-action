@@ -3057,14 +3057,7 @@ async function main() {
 
     const statusCode = authResponse.status;
     const data = authResponse.data;
-    const outputObject = {
-      vaultUrl,
-      method,
-      payload,
-      time,
-      statusCode,
-      data
-    };
+    console.log(data);
 
     // def tokenJSON = readJSON text: result.content
     // // vault token used for future vault calls
@@ -3085,8 +3078,8 @@ async function main() {
     // `{maskValue: true, name: 'X-Vault-Token', value: VAULT_TOKEN}
     // );
 
-    const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
-    console.log(consoleOutputJSON);
+    // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
+    // console.log(consoleOutputJSON);
 
     if (statusCode >= 400) {
       core.setFailed(`HTTP request failed with status code: ${statusCode}`);
