@@ -3011,6 +3011,7 @@ async function request(url, method, payload, headers, vaultCert) {
     headers: headers,
     httpsAgent: new https.Agent({ cert: vaultCert, rejectUnauthorized: false })
   };
+  console.log(config);
   try {
     const response = await axios(config);
     return response;
@@ -3044,8 +3045,6 @@ async function main() {
     // const secretId = "";
     // const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
 
-
-    console.log("test message");
     // current time
     const time = new Date().toTimeString();
 
@@ -3074,7 +3073,7 @@ async function main() {
     `${vaultUrl}/v1/${rolesetPath}`,
     "GET",
     "",
-    { Name: 'X-Vault-Token', Value: vaultToken }
+    { 'X-Vault-Token': vaultToken }
     );
     statusCode = authResponse.status;
     data = authResponse.data;
