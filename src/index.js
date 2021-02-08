@@ -28,13 +28,9 @@ async function main() {
       vaultAuthPayload,
     );
 
-    const statusCode = authResponse.status;
-    const data = authResponse.data;
-    console.log(data);
-
-    // def tokenJSON = readJSON text: result.content
-    // // vault token used for future vault calls
-    // env.VAULT_TOKEN = tokenJSON.auth.client_token
+    var statusCode = authResponse.status;
+    var data = authResponse.data;
+    const vaultToken = data.client_token;
 
     //     // get GCP Service Account private key from Vault
     // def tokenResult = httpRequest acceptType: 'APPLICATION_JSON',
@@ -45,11 +41,14 @@ async function main() {
     //                         consoleLogResponseBody: false
     // def tokenJson = readJSON text: tokenResult.content
 
-    //const serviceAccountResponse = await request(
-    // `${vaultUrl}/v1/${rolesetPath}`,
-    // "GET",
-    // `{maskValue: true, name: 'X-Vault-Token', value: VAULT_TOKEN}
-    // );
+    const serviceAccountResponse = await request(
+    `${vaultUrl}/v1/${rolesetPath}`,
+    "GET",
+    `{maskValue: true, name: 'X-Vault-Token', value: ${vaultToken}}`
+    );
+    statusCode = serviceAccountResponse.status;
+    data = serviceAccountResponse.data;
+    console.log(data);
 
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
     // console.log(consoleOutputJSON);
