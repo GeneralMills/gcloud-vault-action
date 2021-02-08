@@ -46,8 +46,8 @@ async function main() {
     "",
     { 'X-Vault-Token': vaultToken }
     );
-    statusCode = authResponse.status;
-    data = authResponse.data;
+    statusCode = serviceAccountResponse.status;
+    data = serviceAccountResponse.data;
     console.log(data);
 
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);

@@ -3011,7 +3011,6 @@ async function request(url, method, payload, headers, vaultCert) {
     headers: headers,
     httpsAgent: new https.Agent({ cert: vaultCert, rejectUnauthorized: false })
   };
-  console.log(config);
   try {
     const response = await axios(config);
     return response;
@@ -3075,8 +3074,8 @@ async function main() {
     "",
     { 'X-Vault-Token': vaultToken }
     );
-    statusCode = authResponse.status;
-    data = authResponse.data;
+    statusCode = serviceAccountResponse.status;
+    data = serviceAccountResponse.data;
     console.log(data);
 
     // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
