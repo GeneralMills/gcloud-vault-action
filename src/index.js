@@ -25,6 +25,7 @@ async function main() {
     const authResponse = await request(
       `${vaultUrl}/v1/auth/approle/login`,
       "POST",
+      "",
       vaultAuthPayload,
     );
 
@@ -44,7 +45,8 @@ async function main() {
     const serviceAccountResponse = await request(
     `${vaultUrl}/v1/${rolesetPath}`,
     "GET",
-    `{maskValue: true, name: 'X-Vault-Token', value: ${vaultToken}}`
+    "",
+    "maskValue: true, name: 'X-Vault-Token', value: ${vaultToken}"
     );
     statusCode = authResponse.status;
     data = authResponse.data;

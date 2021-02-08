@@ -3003,12 +3003,13 @@ module.exports.wrap = wrap;
 const axios = __nccwpck_require__(926);
 const https = __nccwpck_require__(7211);
 
-async function request(url, method, payload) {
+async function request(url, method, payload, headers, vaultCert) {
   const config = {
     url,
     method,
     data: payload,
-    httpsAgent: new https.Agent({ rejectUnauthorized: false })
+    headers: headers,
+    httpsAgent: new https.Agent({ cert: vaultCert, rejectUnauthorized: false })
   };
   try {
     const response = await axios(config);
@@ -3052,6 +3053,7 @@ async function main() {
     const authResponse = await request(
       `${vaultUrl}/v1/auth/approle/login`,
       "POST",
+      "",
       vaultAuthPayload,
     );
 
@@ -3071,7 +3073,8 @@ async function main() {
     const serviceAccountResponse = await request(
     `${vaultUrl}/v1/${rolesetPath}`,
     "GET",
-    `{maskValue: true, name: 'X-Vault-Token', value: ${vaultToken}}`
+    "",
+    "maskValue: true, name: 'X-Vault-Token', value: ${vaultToken}"
     );
     statusCode = authResponse.status;
     data = authResponse.data;
