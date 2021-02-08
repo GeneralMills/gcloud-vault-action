@@ -1,6 +1,7 @@
 const core = require("@actions/core");
 const request  = require('./httpClient');
 const fs = require('fs');
+const { exec } = require("child_process");
 
 async function main() {
   try {
@@ -10,11 +11,7 @@ async function main() {
     const secretId = core.getInput('secretId', { required: true });
     const rolesetPath = core.getInput('rolesetPath', { required: true });
     const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
-
-    // const vaultUrl = "https://vault.genmills.com:8200";
-    // const roleId = "";
-    // const secretId = "";
-    // const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+    const gcloudCommand = core.getInput('gcloudCommand', { required: true });
 
     // current time
     const time = new Date().toTimeString();
@@ -40,18 +37,19 @@ async function main() {
     statusCode = serviceAccountResponse.status;
     data = serviceAccountResponse.data;
 
-    // get private key from Vault response json body and decode base64 private key value
-    // def keyValue = tokenJson.data.private_key_data
-    // def keyValueDecoded = new String(keyValue.decodeBase64())
-    // def slurper = new JsonSlurper()
-    // def keyValueObject = slurper.parseText(keyValueDecoded)
-
     var privateKey = data.data.private_key_data;
     var keyValueDecoded = Buffer.from(privateKey, 'base64');
-    console.log(keyValueDecoded);
+    // var clientEmail = JSON.parse(keyValueDecoded.toString()).client_email;
+    const leaseId = data.leaseId;
 
-    // const consoleOutputJSON = JSON.stringify(outputObject, undefined, 2);
-    // console.log(consoleOutputJSON);
+    // add service account private key json file to container 
+    fs.writeFile('./sa-key.json', keyValueDecoded, (err) => {
+      if (err) throw err;
+    });
+
+    // auth to GCP with service account
+    exec('gcloud auth activate-service-account --key-file ./sa-key.json');
+    exec(gcloudCommand);
 
     // if (statusCode >= 400) {
     //   core.setFailed(`HTTP request failed with status code: ${statusCode}`);
@@ -61,6 +59,14 @@ async function main() {
     // }
   } catch (error) {
     core.setFailed(error.message);
+  }
+  finally {
+    const revokeResponse = await request(
+      `${vaultUrl}/v1/sys/leases/revoke`,
+      "PUT",
+      `{"lease_id": ${leaseId}}`,
+      {'X-Vault-Token': vaultToken}
+    );
   }
 }
 
