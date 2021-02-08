@@ -23,8 +23,8 @@ async function main() {
     const authResponse = await request(
       `${vaultUrl}/v1/auth/approle/login`,
       "POST",
-      "",
       vaultAuthPayload,
+      ""
     );
 
     var statusCode = authResponse.status;
