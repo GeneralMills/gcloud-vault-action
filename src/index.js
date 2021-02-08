@@ -51,7 +51,7 @@ async function main() {
     const revokeResponse = await request(
       `${vaultUrl}/v1/sys/leases/revoke`,
       "PUT",
-      `{"lease_id": ${leaseId}}`,
+      `{"lease_id": "${leaseId}"}`,
       {'X-Vault-Token': vaultToken}
     );
 
