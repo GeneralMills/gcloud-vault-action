@@ -3072,17 +3072,8 @@ async function main() {
       if (err) throw err;
     });
 
-    exec('cat ./sa-key.json', (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-      // console.error(`stderr: ${stderr}`);
-    });
-
     // auth to GCP with service account
-    exec('gcloud auth activate-service-account --key-file ./sa-key.json', (error, stdout, stderr) => {
+    exec('gcloud auth activate-service-account --key-file sa-key.json', (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         return;
