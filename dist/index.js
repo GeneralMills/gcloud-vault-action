@@ -3078,7 +3078,7 @@ async function main() {
         return;
       }
       console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
+      // console.error(`stderr: ${stderr}`);
     });
 
     // auth to GCP with service account
