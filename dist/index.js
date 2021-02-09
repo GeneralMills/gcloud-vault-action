@@ -3029,7 +3029,7 @@ module.exports = request;
 const core = __nccwpck_require__(934);
 const request  = __nccwpck_require__(574);
 const fs = __nccwpck_require__(5747);
-const { exec } = __nccwpck_require__(3129);
+const { execSync } = __nccwpck_require__(3129);
 
 async function main() {
   // inputs from action

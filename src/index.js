@@ -1,7 +1,7 @@
 const core = require("@actions/core");
 const request  = require('./httpClient');
 const fs = require('fs');
-const { exec } = require("child_process");
+const { execSync } = require("child_process");
 
 async function main() {
   // inputs from action
