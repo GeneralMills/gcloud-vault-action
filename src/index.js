@@ -40,7 +40,7 @@ async function main() {
     const leaseId = data.lease_id;
 
     // add service account private key json file to container 
-    fs.writeFile('./sa-key.json', keyValueDecoded, (err) => {
+    fs.writeFileSync('./sa-key.json', keyValueDecoded, (err) => {
       if (err) throw err;
     });
 
