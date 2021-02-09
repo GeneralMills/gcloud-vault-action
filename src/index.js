@@ -44,17 +44,8 @@ async function main() {
       if (err) throw err;
     });
 
-    exec('test -f sa-key.json && echo "$FILE exists."', (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-      console.error(`stderr: ${stderr}`);
-    });
-
     // auth to GCP with service account
-    exec('gcloud auth activate-service-account --key-file sa-key.json', (error, stdout, stderr) => {
+    execSync('gcloud auth activate-service-account --key-file sa-key.json', (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         return;
@@ -63,7 +54,7 @@ async function main() {
       console.error(`stderr: ${stderr}`);
     });
 
-    exec(gcloudCommand, (error, stdout, stderr) => {
+    execSync(gcloudCommand, (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         return;
