@@ -22,5 +22,5 @@ uses: GeneralMills/gcloud-vault-action
     roleId: ${{ secrets.ROLE_ID }}
     secretId: ${{ secrets.SECRET_ID }}
     rolesetPath: ${{ env.ROLESET_PATH }}
-    gcloudCommand: "sh 'gcloud auth configure-docker gcr.io'"
+    gcloudCommand: "gcloud auth configure-docker gcr.io"
 ```
