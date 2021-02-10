@@ -3126,7 +3126,7 @@ async function revokeLease(vaultUrl, leaseId, vaultToken) {
     { 'X-Vault-Token': vaultToken }
   );
 
-  var statusCode = revokeResponse.statusCode;
+  var statusCode = revokeResponse.status;
   if (statusCode == 204) {
     console.log(`Successfully revoked lease: ${leaseId}`);
   }
