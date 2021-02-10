@@ -60,6 +60,7 @@ async function main() {
 }
 
 async function getVaultToken(vaultUrl, vaultAuthPayload) {
+  console.log(`Authenticating to vault`);
   const authResponse = await request(
     `${vaultUrl}/v1/auth/approle/login`,
     "POST",
@@ -77,6 +78,7 @@ async function getVaultToken(vaultUrl, vaultAuthPayload) {
 }
 
 async function getServiceAccount(vaultUrl, rolesetPath, vaultToken) {
+  console.log(`Activating service account`);
   const serviceAccountResponse = await request(
     `${vaultUrl}/v1/${rolesetPath}`,
     "GET",
@@ -96,6 +98,7 @@ async function getServiceAccount(vaultUrl, rolesetPath, vaultToken) {
 }
 
 async function revokeLease(vaultUrl, leaseId, vaultToken) {
+  console.log(`Revoking lease ${leaseId}`);
   const revokeResponse = await request(
     `${vaultUrl}/v1/sys/leases/revoke`,
     "PUT",
