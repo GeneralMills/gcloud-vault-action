@@ -99,8 +99,11 @@ async function revokeLease(vaultUrl, leaseId, vaultToken) {
   );
 
   var statusCode = revokeResponse.statusCode;
-  if (statusCode >= 400) {
-    console.log(`Failed to revoke lease: ${leaseId}`);
+  if (statusCode == 204) {
+    console.log(`Successfully revoked lease: ${leaseId}`);
+  }
+  else {
+    console.log(`Failed to revoke key with ${statusCode} on lease: ${leaseId}`);
   }
 }
 
