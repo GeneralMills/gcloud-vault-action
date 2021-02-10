@@ -3030,76 +3030,105 @@ const core = __nccwpck_require__(934);
 const request  = __nccwpck_require__(574);
 const fs = __nccwpck_require__(5747);
 const { execSync } = __nccwpck_require__(3129);
+const { exception } = __nccwpck_require__(7082);
 
 async function main() {
-  // inputs from action
-  const vaultUrl = core.getInput('vaultUrl', { required: true });
-  const roleId = core.getInput('roleId', { required: true });
-  const secretId = core.getInput('secretId', { required: true });
-  const rolesetPath = core.getInput('rolesetPath', { required: true });
-  const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
-  const gcloudCommand = core.getInput('gcloudCommand', { required: true });
-
   try {
+
+    // inputs from action
+    const vaultUrl = core.getInput('vaultUrl', { required: true });
+    const roleId = core.getInput('roleId', { required: true });
+    const secretId = core.getInput('secretId', { required: true });
+    const rolesetPath = core.getInput('rolesetPath', { required: true });
+    const gcloudCommand = core.getInput('gcloudCommand', { required: true });
+    const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+
     // authenticate to vault
-    const authResponse = await request(
-      `${vaultUrl}/v1/auth/approle/login`,
-      "POST",
-      vaultAuthPayload,
-      ""
-    );
+    var vaultToken = await getVaultToken(vaultUrl, vaultAuthPayload);
 
-    var statusCode = authResponse.status;
-    var data = authResponse.data;
-    const vaultToken = data.auth.client_token;
-
-    const serviceAccountResponse = await request(
-    `${vaultUrl}/v1/${rolesetPath}`,
-    "GET",
-    "",
-    { 'X-Vault-Token': vaultToken }
-    );
-    statusCode = serviceAccountResponse.status;
-    data = serviceAccountResponse.data;
-
-    var privateKey = data.data.private_key_data;
-    var keyValueDecoded = Buffer.from(privateKey, 'base64');
-    // var clientEmail = JSON.parse(keyValueDecoded.toString()).client_email;
-    const leaseId = data.lease_id;
+    // activate service account
+    var { keyValueDecoded, leaseId } = await getServiceAccount(vaultUrl, rolesetPath, vaultToken);
 
     // add service account private key json file to container 
-    fs.writeFileSync('sa-key.json', keyValueDecoded, (err) => {
-      if (err) throw err;
+    fs.writeFileSync('sa-key.json', keyValueDecoded, (error) => {
+      if (error) throw error;
     });
 
     // auth to GCP with service account
     execSync('gcloud auth activate-service-account --key-file sa-key.json', (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
-        return;
+        throw error;
       }
       console.log(`stdout: ${stdout}`);
       console.error(`stderr: ${stderr}`);
     });
 
+    // execute provided command
     execSync(gcloudCommand, (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
-        return;
+        throw error;
       }
       console.log(`stdout: ${stdout}`);
       console.error(`stderr: ${stderr}`);
     });
 
-    const revokeResponse = await request(
-      `${vaultUrl}/v1/sys/leases/revoke`,
-      "PUT",
-      `{"lease_id": "${leaseId}"}`,
-      {'X-Vault-Token': vaultToken}
-    );
+    // release service account
+    await revokeLease(vaultUrl, leaseId, vaultToken);
 
   } catch (error) {
     core.setFailed(error.message);
+  }
+}
+
+async function getVaultToken(vaultUrl, vaultAuthPayload) {
+  const authResponse = await request(
+    `${vaultUrl}/v1/auth/approle/login`,
+    "POST",
+    vaultAuthPayload,
+    ""
+  );
+
+  var statusCode = authResponse.status;
+  if (statusCode >= 400) {
+    throw exception(`Failed to login via the provided approle with status code: ${statusCode}`);
+  }
+
+  var data = authResponse.data;
+  return data.auth.client_token;
+}
+
+async function getServiceAccount(vaultUrl, rolesetPath, vaultToken) {
+  const serviceAccountResponse = await request(
+    `${vaultUrl}/v1/${rolesetPath}`,
+    "GET",
+    "",
+    { 'X-Vault-Token': vaultToken }
+  );
+
+  var statusCode = serviceAccountResponse.status;
+  if (statusCode >= 400) {
+    throw exception(`Failed to access provided rolset path with status code: ${statusCode}`);
+  }
+
+  var saData = serviceAccountResponse.data;
+  var keyValueDecoded = Buffer.from(saData.data.private_key_data, 'base64');
+  var leaseId = saData.lease_id;
+  return { keyValueDecoded, leaseId };
+}
+
+async function revokeLease(vaultUrl, leaseId, vaultToken) {
+  const revokeResponse = await request(
+    `${vaultUrl}/v1/sys/leases/revoke`,
+    "PUT",
+    `{"lease_id": "${leaseId}"}`,
+    { 'X-Vault-Token': vaultToken }
+  );
+
+  var statusCode = revokeResponse.statusCode;
+  if (statusCode >= 400) {
+    console.log(`Failed to revoke lease: ${leaseId}`);
   }
 }
 
@@ -4269,6 +4298,14 @@ module.exports = require("assert");;
 
 "use strict";
 module.exports = require("child_process");;
+
+/***/ }),
+
+/***/ 7082:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("console");;
 
 /***/ }),
 
