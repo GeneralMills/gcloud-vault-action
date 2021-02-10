@@ -3065,6 +3065,7 @@ async function main() {
     });
 
     // execute provided command
+    console.log(`Executing command: ${gcloudCommand}`);
     execSync(gcloudCommand, (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
