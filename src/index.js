@@ -49,6 +49,11 @@ async function main() {
     // release service account
     await revokeLease(vaultUrl, leaseId, vaultToken);
 
+    // delete key json file
+    fs.unlinkSync('sa-key.json', (error) => {
+      if (error) throw error;
+    });
+
   } catch (error) {
     core.setFailed(error.message);
   }
