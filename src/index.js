@@ -5,7 +5,6 @@ const { execSync } = require("child_process");
 const { exception } = require("console");
 
 async function main() {
-  try {
 
     // inputs from action
     const vaultUrl = core.getInput('vaultUrl', { required: true });
@@ -21,6 +20,8 @@ async function main() {
     // activate service account
     var { keyValueDecoded, leaseId } = await getServiceAccount(vaultUrl, rolesetPath, vaultToken);
 
+  try {
+    
     // add service account private key json file to container 
     fs.writeFileSync('sa-key.json', keyValueDecoded, (error) => {
       if (error) throw error;
@@ -47,9 +48,6 @@ async function main() {
       console.error(`stderr: ${stderr}`);
     });
 
-    // release service account
-    await revokeLease(vaultUrl, leaseId, vaultToken);
-
     // delete key json file
     fs.unlinkSync('sa-key.json', (error) => {
       if (error) throw error;
@@ -57,6 +55,9 @@ async function main() {
 
   } catch (error) {
     core.setFailed(error.message);
+  } finally {
+    // release service account
+    await revokeLease(vaultUrl, leaseId, vaultToken);
   }
 }
 
@@ -71,7 +72,7 @@ async function getVaultToken(vaultUrl, vaultAuthPayload) {
 
   var statusCode = authResponse.status;
   if (statusCode >= 400) {
-    throw exception(`Failed to login via the provided approle with status code: ${statusCode}`);
+    core.setFailed(`Failed to login via the provided approle with status code: ${statusCode}`);
   }
 
   var data = authResponse.data;
@@ -89,7 +90,7 @@ async function getServiceAccount(vaultUrl, rolesetPath, vaultToken) {
 
   var statusCode = serviceAccountResponse.status;
   if (statusCode >= 400) {
-    throw exception(`Failed to access provided rolset path with status code: ${statusCode}`);
+    core.setFailed(`Failed to access provided rolset path with status code: ${statusCode}`);
   }
 
   var saData = serviceAccountResponse.data;
@@ -112,6 +113,7 @@ async function revokeLease(vaultUrl, leaseId, vaultToken) {
     console.log(`Successfully revoked lease: ${leaseId}`);
   }
   else {
+    // technically the entire command still executed, but the lease is still hanging around, so don't fail the whole run
     console.log(`Failed to revoke key with ${statusCode} on lease: ${leaseId}`);
   }
 }
