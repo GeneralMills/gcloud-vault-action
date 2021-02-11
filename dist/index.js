@@ -3038,7 +3038,7 @@ async function main() {
   const roleId = core.getInput('roleId', { required: true });
   const secretId = core.getInput('secretId', { required: true });
   const rolesetPath = core.getInput('rolesetPath', { required: true });
-  const command = core.getInput('command', { required: true });
+  const script = core.getInput('script', { required: true });
   const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
 
   // authenticate to vault
@@ -3062,9 +3062,9 @@ async function main() {
       console.error(`stderr: ${stderr}`);
     });
 
-    // execute provided command
-    console.log(`Executing command: ${command}`);
-    execSync(command, (error, stdout, stderr) => {
+    // execute provided script
+    console.log(`Executing script: ${script}`);
+    execSync(script, (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         throw error;
@@ -3138,7 +3138,7 @@ async function revokeLease(vaultUrl, leaseId, vaultToken) {
     console.log(`Successfully revoked lease: ${leaseId}`);
   }
   else {
-    // technically the entire command still executed, but the lease is still hanging around, so don't fail the whole run
+    // technically the entire script still executed, but the lease is still hanging around, so don't fail the whole run
     console.log(`Failed to revoke key with ${statusCode} on lease: ${leaseId}`);
   }
 }

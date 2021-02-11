@@ -1,5 +1,5 @@
 name: 'Vault GCloud Action'
-description: 'Authenticates to gcloud via Vault and then runs the provided command'
+description: 'Authenticates to gcloud via Vault and then runs the provided script'
 inputs:
     vaultUrl:
         description: 'Vault URL'
@@ -13,8 +13,8 @@ inputs:
     rolesetPath:
         description: 'Path to the GCP roleset in Vault'
         required: true
-    command:
-        description: 'command(s) to run'
+    script:
+        description: 'script to run'
         required: true
 runs:
     using: 'node12'

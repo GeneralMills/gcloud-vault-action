@@ -1,7 +1,7 @@
 # gcloud-vault-action
 
-A GitHub Action to authenticate to gcloud via Vault and then execute a provided command.
-This method will take a Vault credential, authenticate to Vault, and get a private SA key from Vault using the provided GCP roleset. It will then will execute the provided command with that credential authenticated in the gcloud SDK. After the closure has been run, the lease on the private SA key in GCP will be revoked using the Vault GCP roleset.
+A GitHub Action to authenticate to gcloud via Vault and then execute a provided script.
+This method will take a Vault credential, authenticate to Vault, and get a private SA key from Vault using the provided GCP roleset. It will then will execute the provided script with that credential authenticated in the gcloud SDK. After the closure has been run, the lease on the private SA key in GCP will be revoked using the Vault GCP roleset.
 
 ## Inputs
 
@@ -11,7 +11,7 @@ This method will take a Vault credential, authenticate to Vault, and get a priva
 | `roleId`        | `true`   | RoleId to authenticate to vault with         |
 | `secretId`      | `true`   | SecretId associated with the role provided   |
 | `rolesetPath`   | `true`   | Path to GCP roleset in vault                 |
-| `command`       | `true`   | gcloud command(s) to run                     |
+| `script`        | `true`   | script to run                                |
 
 ## Example
 
@@ -22,8 +22,8 @@ uses: GeneralMills/gcloud-vault-action
     roleId: ${{ secrets.ROLE_ID }}
     secretId: ${{ secrets.SECRET_ID }}
     rolesetPath: ${{ env.ROLESET_PATH }}
-    command: |
+    script: |
         gcloud auth configure-docker gcr.io
 ```
 
-`command` can execute multiple commands as well.
+`script` can execute multiple lines.
