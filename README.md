@@ -11,7 +11,7 @@ This method will take a Vault credential, authenticate to Vault, and get a priva
 | `roleId`        | `true`   | RoleId to authenticate to vault with         |
 | `secretId`      | `true`   | SecretId associated with the role provided   |
 | `rolesetPath`   | `true`   | Path to GCP roleset in vault                 |
-| `gcloudCommand` | `true`   | gcloud command to run                        |
+| `command`       | `true`   | gcloud command(s) to run                     |
 
 ## Example
 
@@ -22,5 +22,8 @@ uses: GeneralMills/gcloud-vault-action
     roleId: ${{ secrets.ROLE_ID }}
     secretId: ${{ secrets.SECRET_ID }}
     rolesetPath: ${{ env.ROLESET_PATH }}
-    gcloudCommand: "gcloud auth configure-docker gcr.io"
+    command: |
+        gcloud auth configure-docker gcr.io
 ```
+
+`command` can execute multiple commands as well.

@@ -11,7 +11,7 @@ async function main() {
   const roleId = core.getInput('roleId', { required: true });
   const secretId = core.getInput('secretId', { required: true });
   const rolesetPath = core.getInput('rolesetPath', { required: true });
-  const gcloudCommand = core.getInput('gcloudCommand', { required: true });
+  const command = core.getInput('command', { required: true });
   const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
 
   // authenticate to vault
@@ -36,8 +36,8 @@ async function main() {
     });
 
     // execute provided command
-    console.log(`Executing command: ${gcloudCommand}`);
-    execSync(gcloudCommand, (error, stdout, stderr) => {
+    console.log(`Executing command: ${command}`);
+    execSync(command, (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         throw error;
