@@ -1,7 +1,7 @@
 const core = require("@actions/core");
 const request  = require('./httpClient');
 const fs = require('fs');
-const { spawnSync } = require("child_process");
+const { execSync } = require("child_process");
 const { exception } = require("console");
 
 async function main() {
@@ -27,7 +27,7 @@ async function main() {
     });
 
     // auth to GCP with service account
-    spawnSync('gcloud auth activate-service-account --key-file sa-key.json', (error, stdout, stderr) => {
+    execSync('gcloud auth activate-service-account --key-file sa-key.json', (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         throw error;
@@ -38,7 +38,7 @@ async function main() {
 
     // execute provided command
     console.log(`Executing command: ${gcloudCommand}`);
-    spawnSync(gcloudCommand, (error, stdout, stderr) => {
+    execSync(gcloudCommand, (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         throw error;

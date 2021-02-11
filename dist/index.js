@@ -3029,7 +3029,7 @@ module.exports = request;
 const core = __nccwpck_require__(934);
 const request  = __nccwpck_require__(574);
 const fs = __nccwpck_require__(5747);
-const { spawnSync } = __nccwpck_require__(3129);
+const { execSync } = __nccwpck_require__(3129);
 const { exception } = __nccwpck_require__(7082);
 
 async function main() {
@@ -3055,7 +3055,7 @@ async function main() {
     });
 
     // auth to GCP with service account
-    spawnSync('gcloud auth activate-service-account --key-file sa-key.json', (error, stdout, stderr) => {
+    execSync('gcloud auth activate-service-account --key-file sa-key.json', (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         throw error;
@@ -3066,7 +3066,7 @@ async function main() {
 
     // execute provided command
     console.log(`Executing command: ${gcloudCommand}`);
-    spawnSync(gcloudCommand, (error, stdout, stderr) => {
+    execSync(gcloudCommand, (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         throw error;
