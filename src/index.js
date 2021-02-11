@@ -2,7 +2,6 @@ const core = require("@actions/core");
 const request  = require('./httpClient');
 const fs = require('fs');
 const { execSync } = require("child_process");
-const { exception } = require("console");
 
 async function main() {
 

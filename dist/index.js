@@ -3030,7 +3030,6 @@ const core = __nccwpck_require__(934);
 const request  = __nccwpck_require__(574);
 const fs = __nccwpck_require__(5747);
 const { execSync } = __nccwpck_require__(3129);
-const { exception } = __nccwpck_require__(7082);
 
 async function main() {
 
@@ -4310,14 +4309,6 @@ module.exports = require("assert");;
 
 "use strict";
 module.exports = require("child_process");;
-
-/***/ }),
-
-/***/ 7082:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("console");;
 
 /***/ }),
 
