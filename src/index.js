@@ -6,24 +6,22 @@ const { exception } = require("console");
 
 async function main() {
 
-    // inputs from action
-    const vaultUrl = core.getInput('vaultUrl', { required: true });
-    const roleId = core.getInput('roleId', { required: true });
-    const secretId = core.getInput('secretId', { required: true });
-    const rolesetPath = core.getInput('rolesetPath', { required: true });
-    const gcloudCommand = core.getInput('gcloudCommand', { required: true });
-    const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
+  // inputs from action
+  const vaultUrl = core.getInput('vaultUrl', { required: true });
+  const roleId = core.getInput('roleId', { required: true });
+  const secretId = core.getInput('secretId', { required: true });
+  const rolesetPath = core.getInput('rolesetPath', { required: true });
+  const gcloudCommand = core.getInput('gcloudCommand', { required: true });
+  const vaultAuthPayload = `{"role_id": "${roleId}", "secret_id": "${secretId}"}`;
 
-    // authenticate to vault
-    var vaultToken = await getVaultToken(vaultUrl, vaultAuthPayload);
-
-    // activate service account
-    var { keyValueDecoded, leaseId } = await getServiceAccount(vaultUrl, rolesetPath, vaultToken);
+  // authenticate to vault
+  var vaultToken = await getVaultToken(vaultUrl, vaultAuthPayload);
+  var { leaseId, key } = await getLeaseAndKey(vaultUrl, rolesetPath, vaultToken);
 
   try {
-    
+
     // add service account private key json file to container 
-    fs.writeFileSync('sa-key.json', keyValueDecoded, (error) => {
+    fs.writeFileSync('sa-key.json', leaseId, (error) => {
       if (error) throw error;
     });
 
@@ -57,7 +55,7 @@ async function main() {
     core.setFailed(error.message);
   } finally {
     // release service account
-    await revokeLease(vaultUrl, leaseId, vaultToken);
+    await revokeLease(vaultUrl, key, vaultToken);
   }
 }
 
@@ -79,7 +77,7 @@ async function getVaultToken(vaultUrl, vaultAuthPayload) {
   return data.auth.client_token;
 }
 
-async function getServiceAccount(vaultUrl, rolesetPath, vaultToken) {
+async function getLeaseAndKey(vaultUrl, rolesetPath, vaultToken) {
   console.log(`Activating service account`);
   const serviceAccountResponse = await request(
     `${vaultUrl}/v1/${rolesetPath}`,
@@ -94,9 +92,9 @@ async function getServiceAccount(vaultUrl, rolesetPath, vaultToken) {
   }
 
   var saData = serviceAccountResponse.data;
-  var keyValueDecoded = Buffer.from(saData.data.private_key_data, 'base64');
+  var key = Buffer.from(saData.data.private_key_data, 'base64');
   var leaseId = saData.lease_id;
-  return { keyValueDecoded, leaseId };
+  return { leaseId, key };
 }
 
 async function revokeLease(vaultUrl, leaseId, vaultToken) {
