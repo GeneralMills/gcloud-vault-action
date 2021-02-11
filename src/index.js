@@ -21,7 +21,7 @@ async function main() {
   try {
 
     // add service account private key json file to container 
-    fs.writeFileSync('sa-key.json', leaseId, (error) => {
+    fs.writeFileSync('sa-key.json', key, (error) => {
       if (error) throw error;
     });
 
@@ -55,7 +55,7 @@ async function main() {
     core.setFailed(error.message);
   } finally {
     // release service account
-    await revokeLease(vaultUrl, key, vaultToken);
+    await revokeLease(vaultUrl, leaseId, vaultToken);
   }
 }
 
