@@ -23,7 +23,7 @@
     "gcloud"
   ],
   "author": "Eric Bartusch",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/GeneralMills/gcloud-vault-action/issues"
   },
