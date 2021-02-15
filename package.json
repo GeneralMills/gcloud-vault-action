@@ -1,7 +1,7 @@
 {
   "name": "gcloud-vault-action",
   "version": "0.0.1",
-  "description": "Authenticate to Vault, get a roleset, and execute gcloud commands",
+  "description": "Authenticate to gcloud via vault, and execute scripts",
   "main": "src/index.js",
   "dependencies": {
     "@actions/core": "^1.2.6",
