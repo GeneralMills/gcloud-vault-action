@@ -14,6 +14,7 @@ async function request(url, method, payload, headers, vaultCert) {
     return response;
   } catch (error) {
     console.error(error);
+    return error.response;
   }
 }
 
